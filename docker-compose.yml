@@ -33,7 +33,7 @@ services:
       WHATSAPP_VERIFY_TOKEN: ${WHATSAPP_VERIFY_TOKEN:-silvercare-verify}
       WHATSAPP_APP_SECRET: ${WHATSAPP_APP_SECRET:-}
       WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:8080}
-      CENTER_NAME: ${CENTER_NAME:-銀護居家服務中心}
+      CENTER_NAME: ${CENTER_NAME:-銀護示範院舍・居家外展}
       SEED_ON_BOOT: "true"
     ports:
       - "8787:8787"

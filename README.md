@@ -22,9 +22,11 @@ npm install
 npm run dev
 ```
 
-- 後台：http://localhost:5173
+- 展覽首頁：http://localhost:5173
+- 現場演示：http://localhost:5173/demo
+- 調度中樞：http://localhost:5173/ops
 - API：http://localhost:8787/health
-- Demo Chat：後台左側「Demo Chat」
+- 講稿：見 [EXHIBITION.md](./EXHIBITION.md)
   - 家屬電話 `61110001`
   - 護理員電話 `91230001`
 

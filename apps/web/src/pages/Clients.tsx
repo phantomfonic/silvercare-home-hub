@@ -12,19 +12,23 @@ export default function Clients() {
     <div>
       <div className="page-head">
         <div>
-          <h1>個案名冊</h1>
-          <p>長者／家屬聯絡資料與服務區域。</p>
+          <h1>居家個案</h1>
+          <p>由院舍建立或經 WhatsApp 首次預約自動建檔；電話即為渠道身份。</p>
         </div>
       </div>
       <div className="panel">
+        <div className="panel-head">
+          <h2>個案名冊</h2>
+          <span className="badge">{rows.length} 位</span>
+        </div>
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>姓名</th>
-                <th>電話</th>
-                <th>區域</th>
-                <th>地址</th>
+                <th>聯絡電話</th>
+                <th>服務區</th>
+                <th>住址</th>
                 <th>緊急聯絡</th>
               </tr>
             </thead>

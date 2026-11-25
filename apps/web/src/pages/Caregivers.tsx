@@ -12,19 +12,23 @@ export default function Caregivers() {
     <div>
       <div className="page-head">
         <div>
-          <h1>護理員班底</h1>
-          <p>技能、服務區域與每日接單上限，供自動調度使用。</p>
+          <h1>外展團隊</h1>
+          <p>院舍護理員外派上門；技能與服務區域決定自動調度優先次序。</p>
         </div>
       </div>
       <div className="panel">
+        <div className="panel-head">
+          <h2>可派出人力</h2>
+          <span className="badge">{rows.filter((r) => r.active).length} 人在崗</span>
+        </div>
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>姓名</th>
-                <th>電話</th>
-                <th>區域</th>
-                <th>技能</th>
+                <th>WhatsApp</th>
+                <th>主力區域</th>
+                <th>技能標籤</th>
                 <th>每日上限</th>
                 <th>狀態</th>
               </tr>
@@ -42,10 +46,10 @@ export default function Caregivers() {
                       </span>
                     ))}
                   </td>
-                  <td>{String(row.max_daily_jobs)}</td>
+                  <td>{String(row.max_daily_jobs)} 單</td>
                   <td>
                     <span className={`badge ${row.active ? "in_progress" : "cancelled"}`}>
-                      {row.active ? "在職" : "停用"}
+                      {row.active ? "可派出" : "停用"}
                     </span>
                   </td>
                 </tr>

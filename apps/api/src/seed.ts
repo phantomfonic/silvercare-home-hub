@@ -27,7 +27,7 @@ export async function seed(force = false): Promise<void> {
   const centerId = id("ctr");
   await sql(
     `INSERT INTO centers (id, name, district, phone, address)
-     VALUES ($1, $2, '觀塘', '21234567', '九龍觀塘成業街示範中心 3 樓')`,
+     VALUES ($1, $2, '觀塘', '21234567', '九龍觀塘成業街銀護示範院舍 3 樓（院舍＋社區外展）')`,
     [centerId, config.centerName],
   );
 

@@ -34,6 +34,6 @@ export const config = {
   whatsappVerifyToken: process.env.WHATSAPP_VERIFY_TOKEN ?? "silvercare-verify",
   whatsappAppSecret: (process.env.WHATSAPP_APP_SECRET ?? "").trim(),
   webOrigin: process.env.WEB_ORIGIN ?? "http://localhost:5173",
-  centerName: process.env.CENTER_NAME ?? "銀護居家服務中心",
+  centerName: process.env.CENTER_NAME ?? "銀護示範院舍・居家外展",
   seedOnBoot: process.env.SEED_ON_BOOT === "true",
 };
