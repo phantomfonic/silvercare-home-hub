@@ -5,6 +5,11 @@
   "outputDirectory": "apps/web/dist",
   "installCommand": "npm install",
   "framework": null,
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
   "env": {
     "DATA_DIR": ":memory:",
     "MIGRATIONS_DIR": "migrations",

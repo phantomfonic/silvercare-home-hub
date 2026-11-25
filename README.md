@@ -36,20 +36,15 @@ npm run dev
 
 > GitHub Pages 只適合純靜態站，本專案有 API／資料庫，**不適用** GitHub.io。
 
+**Push 自動部署：** 見 [DEPLOY.md](./DEPLOY.md)（Vercel Import 此 GitHub 專案即可）。
+
 ```bash
-npm i -g vercel   # 或 npx
+npm i -g vercel
 vercel login
-vercel            # 首次會建立專案
-vercel --prod     # 正式網域
+vercel --prod
 ```
 
-或匿名試跑（約 1 小時後過期，可用 claim 連結接管）：
-
-```bash
-npx vercel deploy --temporary --yes
-```
-
-Vercel 上使用記憶體 PGlite（每次冷啟動重 seed），適合演示；正式中心請改接 `DATABASE_URL`（Neon／Vercel Postgres）。
+Vercel 上使用記憶體 PGlite（冷啟動自動 seed），適合演示；正式可改接 `DATABASE_URL`。
 
 ## 一鍵 Docker 部署
 
