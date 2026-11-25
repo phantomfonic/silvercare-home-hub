@@ -36,7 +36,9 @@ npm run dev
 
 > GitHub Pages 只適合純靜態站，本專案有 API／資料庫，**不適用** GitHub.io。
 
-**Push 自動部署：** 見 [DEPLOY.md](./DEPLOY.md)（Vercel Import 此 GitHub 專案即可）。
+**線上 Demo：** https://silvercare-home-hub.vercel.app  
+
+**Push 自動部署：** 見 [DEPLOY.md](./DEPLOY.md)（GitHub 已接 Vercel）。
 
 ```bash
 npm i -g vercel
