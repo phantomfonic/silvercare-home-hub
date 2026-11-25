@@ -68,7 +68,6 @@ export async function seed(force = false): Promise<void> {
        VALUES ($1, $2, $3, $4, $5, $6, TRUE, 6)`,
       [cid, centerId, cg.name, cg.phone, cg.district, cg.skills],
     );
-    // 週一至六 09:00-18:00
     for (let wd = 1; wd <= 6; wd++) {
       await sql(
         `INSERT INTO availability (id, caregiver_id, weekday, start_time, end_time)
@@ -90,6 +89,7 @@ export async function seed(force = false): Promise<void> {
       district: "觀塘",
       address: "觀塘翠屏邨示範座 12 樓",
       emergency: "兒子 90001111",
+      notes: "輕度行動不便；偏好上午時段",
     },
     {
       name: "劉伯",
@@ -97,6 +97,7 @@ export async function seed(force = false): Promise<void> {
       district: "黃大仙",
       address: "黃大仙下邨示範樓 5 樓",
       emergency: "女兒 90002222",
+      notes: "定期覆診；需陪診護送",
     },
     {
       name: "周太太",
@@ -104,15 +105,34 @@ export async function seed(force = false): Promise<void> {
       district: "九龍城",
       address: "土瓜灣馬頭圍道示範大廈",
       emergency: "孫女 90003333",
+      notes: "復康跟進中",
+    },
+    {
+      name: "何婆婆",
+      phone: "61110004",
+      district: "觀塘",
+      address: "藍田興田邨示範座",
+      emergency: "兒子 90004444",
+      notes: "送飯＋清潔組合",
+    },
+    {
+      name: "馬伯",
+      phone: "61110005",
+      district: "沙田",
+      address: "沙田瀝源邨示範樓",
+      emergency: "女兒 90005555",
+      notes: "認知障礙初期；需陪伴看護",
     },
   ];
 
+  const clientIds: Record<string, string> = {};
   for (const c of clients) {
     const cid = id("cli");
+    clientIds[c.phone] = cid;
     await sql(
       `INSERT INTO elderly_clients (id, center_id, name, phone, district, address, notes, emergency_contact)
-       VALUES ($1, $2, $3, $4, $5, $6, '', $7)`,
-      [cid, centerId, c.name, c.phone, c.district, c.address, c.emergency],
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [cid, centerId, c.name, c.phone, c.district, c.address, c.notes, c.emergency],
     );
     await sql(
       `INSERT INTO channel_identities (id, channel, external_id, role, ref_id, display_name)
@@ -121,19 +141,102 @@ export async function seed(force = false): Promise<void> {
     );
   }
 
-  // 示範：一張待調度 + 一張已指派
-  const client = await sqlOne<{ id: string }>(
-    `SELECT id FROM elderly_clients WHERE phone = '61110001'`,
-  );
-  if (client) {
-    const start = nextWeekdayAt(10, 0);
-    const end = new Date(start.getTime() + 90 * 60 * 1000);
+  // 歷史已完成單（撐分析 Dashboard）
+  const history: Array<{
+    phone: string;
+    service: string;
+    caregiverIdx: number;
+    daysAgo: number;
+    hour: number;
+  }> = [
+    { phone: "61110001", service: "cleaning", caregiverIdx: 0, daysAgo: 12, hour: 10 },
+    { phone: "61110001", service: "bathing", caregiverIdx: 0, daysAgo: 9, hour: 11 },
+    { phone: "61110001", service: "cleaning", caregiverIdx: 0, daysAgo: 5, hour: 10 },
+    { phone: "61110002", service: "escort", caregiverIdx: 1, daysAgo: 14, hour: 9 },
+    { phone: "61110002", service: "escort", caregiverIdx: 1, daysAgo: 7, hour: 9 },
+    { phone: "61110002", service: "companionship", caregiverIdx: 1, daysAgo: 3, hour: 15 },
+    { phone: "61110003", service: "rehab", caregiverIdx: 2, daysAgo: 10, hour: 14 },
+    { phone: "61110003", service: "rehab", caregiverIdx: 2, daysAgo: 6, hour: 14 },
+    { phone: "61110003", service: "cleaning", caregiverIdx: 2, daysAgo: 2, hour: 10 },
+    { phone: "61110004", service: "meal", caregiverIdx: 0, daysAgo: 8, hour: 12 },
+    { phone: "61110004", service: "meal", caregiverIdx: 0, daysAgo: 4, hour: 12 },
+    { phone: "61110004", service: "errand", caregiverIdx: 0, daysAgo: 1, hour: 16 },
+    { phone: "61110005", service: "companionship", caregiverIdx: 3, daysAgo: 11, hour: 10 },
+    { phone: "61110005", service: "companionship", caregiverIdx: 3, daysAgo: 4, hour: 10 },
+  ];
+
+  for (const h of history) {
+    const start = atDaysAgo(h.daysAgo, h.hour, 0);
+    const duration = services.find((s) => s[0] === h.service)?.[3] ?? 60;
+    const end = new Date(start.getTime() + duration * 60 * 1000);
+    const bookingId = id("bkg");
+    const asgId = id("asg");
+    await sql(
+      `INSERT INTO bookings (id, center_id, client_id, service_type_id, requested_start, requested_end, status, notes, channel)
+       VALUES ($1, $2, $3, $4, $5, $6, 'completed', '歷史服務（展覽分析）', 'web')`,
+      [
+        bookingId,
+        centerId,
+        clientIds[h.phone],
+        serviceIds[h.service],
+        start.toISOString(),
+        end.toISOString(),
+      ],
+    );
+    await sql(
+      `INSERT INTO assignments (id, booking_id, caregiver_id, score, status, check_in_at, check_out_at)
+       VALUES ($1, $2, $3, 80, 'completed', $4, $5)`,
+      [asgId, bookingId, caregiverIds[h.caregiverIdx], start.toISOString(), end.toISOString()],
+    );
+  }
+
+  // 本週即將／進行中：時間表用
+  const upcoming: Array<{
+    phone: string;
+    service: string;
+    caregiverIdx: number | null;
+    dayOffset: number;
+    hour: number;
+    status: string;
+  }> = [
+    { phone: "61110001", service: "cleaning", caregiverIdx: null, dayOffset: 1, hour: 10, status: "pending" },
+    { phone: "61110002", service: "escort", caregiverIdx: 1, dayOffset: 1, hour: 9, status: "accepted" },
+    { phone: "61110003", service: "rehab", caregiverIdx: 2, dayOffset: 2, hour: 14, status: "assigned" },
+    { phone: "61110004", service: "meal", caregiverIdx: 0, dayOffset: 2, hour: 12, status: "accepted" },
+    { phone: "61110005", service: "companionship", caregiverIdx: 3, dayOffset: 3, hour: 10, status: "assigned" },
+    { phone: "61110001", service: "bathing", caregiverIdx: 0, dayOffset: 4, hour: 11, status: "assigned" },
+  ];
+
+  for (const u of upcoming) {
+    const start = atDayOffset(u.dayOffset, u.hour, 0);
+    const duration = services.find((s) => s[0] === u.service)?.[3] ?? 60;
+    const end = new Date(start.getTime() + duration * 60 * 1000);
     const bookingId = id("bkg");
     await sql(
       `INSERT INTO bookings (id, center_id, client_id, service_type_id, requested_start, requested_end, status, notes, channel)
-       VALUES ($1, $2, $3, $4, $5, $6, 'pending', '示範待調度', 'web')`,
-      [bookingId, centerId, client.id, serviceIds.cleaning, start.toISOString(), end.toISOString()],
+       VALUES ($1, $2, $3, $4, $5, $6, $7, '本週排程（展覽時間表）', 'web')`,
+      [
+        bookingId,
+        centerId,
+        clientIds[u.phone],
+        serviceIds[u.service],
+        start.toISOString(),
+        end.toISOString(),
+        u.status,
+      ],
     );
+    if (u.caregiverIdx != null) {
+      await sql(
+        `INSERT INTO assignments (id, booking_id, caregiver_id, score, status)
+         VALUES ($1, $2, $3, 85, $4)`,
+        [
+          id("asg"),
+          bookingId,
+          caregiverIds[u.caregiverIdx],
+          u.status === "accepted" ? "accepted" : "offered",
+        ],
+      );
+    }
   }
 
   console.log("Seed 完成：", config.centerName);
@@ -141,11 +244,20 @@ export async function seed(force = false): Promise<void> {
   console.log("護理員示範電話：91230001（陳護理員）");
 }
 
-function nextWeekdayAt(hour: number, minute: number): Date {
+function atDaysAgo(daysAgo: number, hour: number, minute: number): Date {
   const now = new Date();
   const d = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" }));
-  d.setDate(d.getDate() + 1);
-  while (d.getDay() === 0) d.setDate(d.getDate() + 1);
+  d.setDate(d.getDate() - daysAgo);
+  const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00+08:00`;
+  return new Date(iso);
+}
+
+function atDayOffset(offset: number, hour: number, minute: number): Date {
+  const now = new Date();
+  const d = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" }));
+  d.setDate(d.getDate() + offset);
+  // 避開週日，往後挪一天
+  if (d.getDay() === 0) d.setDate(d.getDate() + 1);
   const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00+08:00`;
   return new Date(iso);
 }

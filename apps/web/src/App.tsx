@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import Bookings from "./pages/Bookings";
 import Clients from "./pages/Clients";
 import Caregivers from "./pages/Caregivers";
+import Analytics from "./pages/Analytics";
+import Timetable from "./pages/Timetable";
 import LiveDemo from "./pages/LiveDemo";
 
 export default function App() {
@@ -14,6 +16,8 @@ export default function App() {
       <Route path="/demo" element={<LiveDemo />} />
       <Route path="/ops" element={<OpsLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="analytics" element={<Analytics />} />
+        <Route path="timetable" element={<Timetable />} />
         <Route path="dispatch" element={<Bookings />} />
         <Route path="cases" element={<Clients />} />
         <Route path="team" element={<Caregivers />} />

@@ -43,9 +43,17 @@ export default function Dashboard() {
             {meta?.centerName ?? "銀護示範院舍"} — 將院內護理能量調度至社區居家服務。
           </p>
         </div>
-        <Link className="btn" to="/demo">
-          開啟現場演示
-        </Link>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <Link className="btn ghost" to="/ops/analytics">
+            個案分析
+          </Link>
+          <Link className="btn ghost" to="/ops/timetable">
+            班表時間表
+          </Link>
+          <Link className="btn" to="/demo">
+            開啟現場演示
+          </Link>
+        </div>
       </div>
 
       <div className="stats">

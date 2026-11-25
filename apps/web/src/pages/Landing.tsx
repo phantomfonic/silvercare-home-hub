@@ -62,24 +62,24 @@ export default function Landing() {
 
       <section className="section exhibit-band">
         <div className="section-narrow">
-          <h2>展覽講解建議（約 3 分鐘）</h2>
-          <p className="section-lead">向來賓說明「院舍能力外延」時，可依此順序操作 Live Demo。</p>
+          <h2>展覽講解建議（約 4 分鐘）</h2>
+          <p className="section-lead">向來賓說明「院舍能力外延」時，可依此順序操作。</p>
           <div className="script-list">
             <div className="script-item">
               <div className="script-role">開場</div>
               <div>院舍已有護理員與服務標準；缺的是把流程拉到社區的調度層。</div>
             </div>
             <div className="script-item">
-              <div className="script-role">Act 1</div>
-              <div>家屬：「幫我預約明天上午 10 點家居清潔」→ 系統自動建單並指派同區護理員。</div>
+              <div className="script-role">Act 1–3</div>
+              <div>WhatsApp：家屬預約 → 護理員接單 → 到離完成。</div>
             </div>
             <div className="script-item">
-              <div className="script-role">Act 2</div>
-              <div>切換護理員視角：「接單」→「到達」→「完成」，展示現場回報。</div>
+              <div className="script-role">分析</div>
+              <div>調度台「個案分析」：完成率、服務時數、區域／項目需求、高頻個案。</div>
             </div>
             <div className="script-item">
-              <div className="script-role">收束</div>
-              <div>打開調度台：服務單狀態、個案與團隊一目了然——院舍可立即對外承接居家單。</div>
+              <div className="script-role">班表</div>
+              <div>「班表時間表」：誰可派出、本週已排上門單、待指派空缺——院舍可立即外展。</div>
             </div>
           </div>
           <div className="hero-cta" style={{ marginTop: "1.6rem" }}>

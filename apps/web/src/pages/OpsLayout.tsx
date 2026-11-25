@@ -12,6 +12,8 @@ export default function OpsLayout() {
           <NavLink to="/ops" end>
             營運總覽
           </NavLink>
+          <NavLink to="/ops/analytics">個案分析</NavLink>
+          <NavLink to="/ops/timetable">班表時間表</NavLink>
           <NavLink to="/ops/dispatch">即時調度</NavLink>
           <NavLink to="/ops/cases">居家個案</NavLink>
           <NavLink to="/ops/team">外展團隊</NavLink>

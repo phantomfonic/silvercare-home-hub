@@ -701,6 +701,103 @@ th {
   animation: pulse 1.6s ease infinite;
 }
 
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.panel-body {
+  padding: 1rem 1.05rem 1.15rem;
+}
+
+.bar-row {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.bar-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+}
+
+.bar-meta span {
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(26, 77, 68, 0.08);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  animation: riseIn 500ms ease both;
+}
+
+.timetable th,
+.timetable td {
+  min-width: 118px;
+}
+
+.timetable th:first-child,
+.timetable td:first-child {
+  min-width: 140px;
+  position: sticky;
+  left: 0;
+  background: var(--paper-elevated);
+  z-index: 1;
+}
+
+.tt-cell {
+  vertical-align: top;
+}
+
+.tt-shift {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin-bottom: 0.35rem;
+}
+
+.tt-off {
+  font-size: 0.75rem;
+  color: rgba(16, 34, 31, 0.35);
+}
+
+.tt-job {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.4rem 0.45rem;
+  margin-top: 0.35rem;
+  border-radius: 8px;
+  background: var(--ok-bg);
+  border-left: 3px solid var(--ok);
+  font-size: 0.75rem;
+}
+
+.tt-job span {
+  color: var(--ink-muted);
+}
+
+.tt-job.pending {
+  background: var(--warn-bg);
+  border-left-color: var(--warn);
+}
+
+.tt-job.assigned,
+.tt-job.accepted {
+  background: var(--info-bg);
+  border-left-color: var(--info);
+}
+
 @keyframes riseIn {
   from {
     opacity: 0;
@@ -761,6 +858,9 @@ th {
   }
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .analytics-grid {
+    grid-template-columns: 1fr;
   }
   .script-item {
     grid-template-columns: 1fr;

@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { ensureDb, sql, sqlOne } from "../apps/api/src/db.js";
 import { handleChat } from "../apps/api/src/agent/handler.js";
+import { getAnalytics, getTimetable } from "../apps/api/src/analytics.js";
 import { autoAssign, findCandidates } from "../apps/api/src/dispatch.js";
 import { seed } from "../apps/api/src/seed.js";
 import { config } from "../apps/api/src/config.js";
@@ -100,6 +101,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
          LIMIT 20`,
       );
       res.status(200).json({ counts, upcoming });
+      return;
+    }
+
+    if (path === "/api/analytics" && method === "GET") {
+      res.status(200).json(await getAnalytics());
+      return;
+    }
+
+    if (path === "/api/timetable" && method === "GET") {
+      res.status(200).json(await getTimetable());
       return;
     }
 
