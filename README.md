@@ -30,6 +30,25 @@ npm run dev
 
 資料預設存於 `./data`（PGlite），無需安裝 Postgres。
 
+## 線上部署（Vercel）
+
+> GitHub Pages 只適合純靜態站，本專案有 API／資料庫，**不適用** GitHub.io。
+
+```bash
+npm i -g vercel   # 或 npx
+vercel login
+vercel            # 首次會建立專案
+vercel --prod     # 正式網域
+```
+
+或匿名試跑（約 1 小時後過期，可用 claim 連結接管）：
+
+```bash
+npx vercel deploy --temporary --yes
+```
+
+Vercel 上使用記憶體 PGlite（每次冷啟動重 seed），適合演示；正式中心請改接 `DATABASE_URL`（Neon／Vercel Postgres）。
+
 ## 一鍵 Docker 部署
 
 ```bash
@@ -62,6 +81,17 @@ apps/api     Fastify API、Agent、調度、Channel Adapter
 apps/web     中心後台 + Demo Chat
 migrations   Postgres / PGlite schema
 ```
+
+## 下一波建議（Roadmap patch）
+
+1. **持久化資料庫**：Vercel／Docker 接 Neon 或 Postgres，避免冷啟動清資料  
+2. **多中心＋職員登入**：中心隔離、角色權限（職員／督導）  
+3. **班表／月曆 UI**：拖曳改派、衝突提示  
+4. **WhatsApp 引導設定**：一頁 wizard 填 token／webhook  
+5. **到離打卡強化**：GPS／相片佐證、超時提醒  
+6. **家屬通知**：預約確認、護理員出發、服務完成推播  
+7. **社署／津貼報表**：服務時數、個案統計匯出  
+8. **Agent evals**：粵語預約／改期／拒單回歸測試
 
 ## 授權
 

@@ -9,13 +9,16 @@
   ],
   "scripts": {
     "dev": "concurrently -n api,web -c cyan,magenta \"npm run dev -w @silvercare/api\" \"npm run dev -w @silvercare/web\"",
-    "build": "npm run build -w @silvercare/api && npm run build -w @silvercare/web",
+    "build": "npm run build -w @silvercare/api && npm run build -w @silvercare/web && npm run build:vercel-api",
+    "build:vercel-api": "node scripts/build-vercel-api.mjs",
     "start": "npm run start -w @silvercare/api",
     "seed": "npm run seed -w @silvercare/api",
     "db:migrate": "npm run db:migrate -w @silvercare/api"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "@vercel/node": "^5.10.2",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.28.2"
   },
   "engines": {
     "node": ">=20"

@@ -34,8 +34,12 @@ async function initDb(): Promise<void> {
     return;
   }
 
-  await mkdir(config.dataDir, { recursive: true });
-  localDb = new PGlite(config.dataDir);
+  if (config.dataDir === ":memory:") {
+    localDb = new PGlite();
+  } else {
+    await mkdir(config.dataDir, { recursive: true });
+    localDb = new PGlite(config.dataDir);
+  }
   await runMigrations({
     exec: async (q) => {
       await localDb!.exec(q);
