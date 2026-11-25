@@ -17,5 +17,4 @@ apps/api/data/
 *.tsbuildinfo
 *.png.webp
 # Vercel serverless bundle（build 時產生）
-api/index.js
 .vercel

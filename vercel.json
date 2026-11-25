@@ -7,7 +7,8 @@
   "framework": null,
   "git": {
     "deploymentEnabled": {
-      "main": true
+      "main": true,
+      "cursor/exhibition-demo-ea9a": true
     }
   },
   "env": {
@@ -16,10 +17,22 @@
     "SEED_ON_BOOT": "true"
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/webhook/(.*)", "destination": "/api" },
-    { "source": "/health", "destination": "/api" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/webhook/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/health",
+      "destination": "/api"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "functions": {
     "api/index.js": {
