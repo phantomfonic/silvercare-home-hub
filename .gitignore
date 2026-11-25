@@ -14,4 +14,5 @@ apps/api/dist/
 *.pglite
 manual-gui-test-screenshots/
 apps/api/data/
+*.tsbuildinfo
 *.png.webp
