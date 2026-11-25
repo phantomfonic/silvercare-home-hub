@@ -1,0 +1,24 @@
+{
+  "name": "silvercare-home-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "香港上門居家老人服務：WhatsApp + AI Agent + 後台調度",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm run dev -w @silvercare/api\" \"npm run dev -w @silvercare/web\"",
+    "build": "npm run build -w @silvercare/api && npm run build -w @silvercare/web",
+    "start": "npm run start -w @silvercare/api",
+    "seed": "npm run seed -w @silvercare/api",
+    "db:migrate": "npm run db:migrate -w @silvercare/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
