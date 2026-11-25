@@ -1,15 +1,30 @@
 import { config as loadEnv } from "dotenv";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 loadEnv({ path: resolve(process.cwd(), "../../.env") });
 loadEnv();
 
+function resolveMigrationsDir(): string {
+  const fromEnv = process.env.MIGRATIONS_DIR;
+  if (fromEnv) return resolve(process.cwd(), fromEnv);
+  const candidates = [
+    resolve(process.cwd(), "migrations"),
+    resolve(process.cwd(), "../../migrations"),
+    resolve(process.cwd(), "../migrations"),
+  ];
+  return candidates.find((p) => existsSync(p)) ?? candidates[0];
+}
+
+const onVercel = Boolean(process.env.VERCEL);
+
 export const config = {
   port: Number(process.env.PORT ?? 8787),
   host: process.env.HOST ?? "0.0.0.0",
   databaseUrl: (process.env.DATABASE_URL ?? "").trim(),
-  dataDir: process.env.DATA_DIR ?? resolve(process.cwd(), "../../data"),
-  migrationsDir: resolve(process.cwd(), process.env.MIGRATIONS_DIR ?? "../../migrations"),
+  // Vercel serverless 檔案系統唯讀：改用記憶體 PGlite（每次冷啟動 seed）
+  dataDir: onVercel || process.env.DATA_DIR === ":memory:" ? ":memory:" : (process.env.DATA_DIR ?? resolve(process.cwd(), "../../data")),
+  migrationsDir: resolveMigrationsDir(),
   channelMode: (process.env.CHANNEL_MODE ?? "web") as "web" | "whatsapp",
   openaiApiKey: (process.env.OPENAI_API_KEY ?? "").trim(),
   openaiBaseUrl: (process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1").replace(/\/$/, ""),
