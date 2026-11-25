@@ -16,3 +16,5 @@ manual-gui-test-screenshots/
 apps/api/data/
 *.tsbuildinfo
 *.png.webp
+# Vercel serverless bundle（build 時產生）
+.vercel

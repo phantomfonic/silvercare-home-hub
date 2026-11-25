@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { handleChat } from "./agent/handler.js";
+import { getAnalytics, getTimetable } from "./analytics.js";
 import { autoAssign, findCandidates } from "./dispatch.js";
 import { config } from "./config.js";
 import { sql, sqlOne } from "./db.js";
@@ -71,6 +72,10 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
     return { counts, upcoming };
   });
+
+  app.get("/api/analytics", async () => getAnalytics());
+
+  app.get("/api/timetable", async () => getTimetable());
 
   app.get("/api/clients", async () => {
     return sql(

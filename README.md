@@ -22,13 +22,31 @@ npm install
 npm run dev
 ```
 
-- 後台：http://localhost:5173
+- 展覽首頁：http://localhost:5173
+- 現場演示：http://localhost:5173/demo
+- 調度中樞：http://localhost:5173/ops
 - API：http://localhost:8787/health
-- Demo Chat：後台左側「Demo Chat」
+- 講稿：見 [EXHIBITION.md](./EXHIBITION.md)
   - 家屬電話 `61110001`
   - 護理員電話 `91230001`
 
 資料預設存於 `./data`（PGlite），無需安裝 Postgres。
+
+## 線上部署（Vercel）
+
+> GitHub Pages 只適合純靜態站，本專案有 API／資料庫，**不適用** GitHub.io。
+
+**線上 Demo：** https://silvercare-home-hub.vercel.app  
+
+**Push 自動部署：** 見 [DEPLOY.md](./DEPLOY.md)（GitHub 已接 Vercel）。
+
+```bash
+npm i -g vercel
+vercel login
+vercel --prod
+```
+
+Vercel 上使用記憶體 PGlite（冷啟動自動 seed），適合演示；正式可改接 `DATABASE_URL`。
 
 ## 一鍵 Docker 部署
 
@@ -62,6 +80,17 @@ apps/api     Fastify API、Agent、調度、Channel Adapter
 apps/web     中心後台 + Demo Chat
 migrations   Postgres / PGlite schema
 ```
+
+## 下一波建議（Roadmap patch）
+
+1. **持久化資料庫**：Vercel／Docker 接 Neon 或 Postgres，避免冷啟動清資料  
+2. **多中心＋職員登入**：中心隔離、角色權限（職員／督導）  
+3. **班表／月曆 UI**：拖曳改派、衝突提示  
+4. **WhatsApp 引導設定**：一頁 wizard 填 token／webhook  
+5. **到離打卡強化**：GPS／相片佐證、超時提醒  
+6. **家屬通知**：預約確認、護理員出發、服務完成推播  
+7. **社署／津貼報表**：服務時數、個案統計匯出  
+8. **Agent evals**：粵語預約／改期／拒單回歸測試
 
 ## 授權
 
